@@ -6,10 +6,10 @@ class User
   field :active, type: Boolean
   field :level, type: Integer
 
-  attr_accessible :name, :active, :level
+  attr_accessible :email, :name, :active, :level
 
   validates_presence_of :email
-  validates :level, inclusion: { in: 1..8 }
+  validates :level, inclusion: { in: 1..8, allow_nil: true }
 
   devise :omniauthable
 
