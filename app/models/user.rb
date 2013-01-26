@@ -2,10 +2,11 @@ class User
   include Mongoid::Document
 
   field :email, type: String
+  field :name, type: String
   field :active, type: Boolean
   field :level, type: Integer
 
-  attr_accessible :active, :level
+  attr_accessible :name, :active, :level
 
   validates_presence_of :email
   validates :level, inclusion: { in: 1..8 }

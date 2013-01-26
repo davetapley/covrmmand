@@ -1,14 +1,30 @@
-<h1>Welcome <%= current_user.email %></h1>
+<h1 style='float:left'>Welcome <%= current_user.email %></h1>
 
-<%= link_to 'sign out', destroy_user_session_path %>
+<%= link_to 'sign out', destroy_user_session_path, style: 'float:right;' %>
 
-<hr>
+<hr style='clear:both'>
 
 <%= form_for current_user, url: dashboard_path do |f| %>
-  Level? <%= f.select :level, 1..8 %>
+  Name <%= f.text_field :name, placeholder: 'the one you use in Ingress'  %>
+  Level <%= f.select :level, 1..8 %>
   Active? <%= f.check_box :active %>
   <%= f.submit %>
 <% end %>
 
 <hr>
+
+<h2>Active users</h2>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Level</th>
+  </tr>
+  <% User.where(active: true).each do |u| %>
+  <tr>
+    <td><%= u.name %></td>
+    <td><%= u.level %></td>
+  </tr>
+  <% end %>
+</table>
 
