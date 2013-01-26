@@ -2,3 +2,13 @@
 
 <%= link_to 'sign out', destroy_user_session_path %>
 
+<hr>
+
+<%= form_for current_user, url: dashboard_path do |f| %>
+  Level? <%= f.select :level, 1..8 %>
+  Active? <%= f.check_box :active %>
+  <%= f.submit %>
+<% end %>
+
+<hr>
+

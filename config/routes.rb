@@ -6,7 +6,7 @@ Covrmmand::Application.routes.draw do
     get 'sign_out', to: 'devise/sessions#destroy', as: :destroy_user_session
   end
 
-  resource :dashboard, only: [:show]
+  resource :dashboard, only: [:show, :update]
 
   root to: 'dashboards#show'
 

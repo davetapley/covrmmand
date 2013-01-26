@@ -2,8 +2,13 @@ class User
   include Mongoid::Document
 
   field :email, type: String
+  field :active, type: Boolean
+  field :level, type: Integer
+
+  attr_accessible :active, :level
 
   validates_presence_of :email
+  validates :level, inclusion: { in: 1..8 }
 
   devise :omniauthable
 
