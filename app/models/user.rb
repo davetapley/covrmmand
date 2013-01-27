@@ -42,7 +42,7 @@ class User
     end
 
     data = MultiJson.load(result.body)['data']
-    create_location timestamp: Time.at(data['timestampMs'].to_i), latitude: data['latitude'], longitude: data['longitude'], accuracy: data['accuracy']
+    create_location timestamp: Time.at(data['timestampMs'].to_i / 1000), latitude: data['latitude'], longitude: data['longitude'], accuracy: data['accuracy']
   end
 
 end
