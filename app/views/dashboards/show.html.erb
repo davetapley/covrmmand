@@ -15,7 +15,7 @@
 
 <h2>Active users</h2>
 
-<%= gmaps4rails @gmaps_json %>
+<%= gmaps("markers" => {"data" => @gmaps_json, "options" => {"rich_marker" => true } }) %>
 
 <table>
   <tr>

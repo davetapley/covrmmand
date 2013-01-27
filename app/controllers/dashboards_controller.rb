@@ -5,7 +5,9 @@ class DashboardsController < ApplicationController
   before_filter :authenticate_user!
 
   def show
-    @gmaps_json = User.where(active: true).to_gmaps4rails
+    @gmaps_json = User.where(active: true).to_gmaps4rails do |user, marker|
+      marker.picture( rich_marker: "<div><h1>#{ user.level }</h1></div>" )
+    end
   end
 
   def update
