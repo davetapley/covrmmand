@@ -6,7 +6,7 @@ class DashboardsController < ApplicationController
 
   def show
     @gmaps_json = User.where(active: true).to_gmaps4rails do |user, marker|
-      marker.picture( rich_marker: "<div><h1>#{ user.level }</h1></div>" )
+      marker.picture( rich_marker: "<div style='background-color:white'><h1>#{ user.level }</h1>#{ user.name }</div>" )
     end
   end
 
