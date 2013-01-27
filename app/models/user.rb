@@ -14,6 +14,8 @@ class User
   validates_presence_of :email
   validates :level, inclusion: { in: 1..8, allow_nil: true }
 
+  before_save :update_location!, if: :active?
+
   devise :omniauthable
 
   acts_as_gmappable process_geocoding: false
