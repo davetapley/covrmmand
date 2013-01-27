@@ -16,6 +16,10 @@ class User
 
   devise :omniauthable
 
+  acts_as_gmappable process_geocoding: false
+  delegate :latitude, to: :location
+  delegate :longitude, to: :location
+
   def self.find_for_google_oauth2(access_token, signed_in_resource=nil)
     user = User.find_or_create_by email: access_token.info.email
     credentials = access_token.credentials
@@ -29,6 +33,11 @@ class User
 
     latitude = client.discovered_api('latitude')
     result = client.execute api_method: latitude.current_location.get, parameters: { 'granularity' => 'best' }
+
+    unless result.success?
+      puts "Update for #{ email } failed"
+      return
+    end
 
     data = MultiJson.load(result.body)['data']
     create_location timestamp: Time.at(data['timestampMs'].to_i), latitude: data['latitude'], longitude: data['longitude'], accuracy: data['accuracy']

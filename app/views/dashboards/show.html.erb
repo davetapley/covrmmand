@@ -15,6 +15,8 @@
 
 <h2>Active users</h2>
 
+<%= gmaps4rails @gmaps_json %>
+
 <table>
   <tr>
     <th>Name</th>
@@ -25,7 +27,7 @@
   <tr>
     <td><%= u.name %></td>
     <td><%= u.level %></td>
-    <td><%= u.location.latitude %>,<%= u.location.longitude %></td>
+    <td><%= u.location.latitude %>,<%= u.location.longitude %> at <%= u.location.timestamp.to_s(:short) %> </td>
   </tr>
   <% end %>
 </table>
