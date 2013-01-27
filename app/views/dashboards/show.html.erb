@@ -19,11 +19,13 @@
   <tr>
     <th>Name</th>
     <th>Level</th>
+    <th>Location</th>
   </tr>
   <% User.where(active: true).each do |u| %>
   <tr>
     <td><%= u.name %></td>
     <td><%= u.level %></td>
+    <td><%= u.location.latitude %>,<%= u.location.longitude %></td>
   </tr>
   <% end %>
 </table>

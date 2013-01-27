@@ -10,6 +10,7 @@ gem 'rails', '3.2.3'
 gem 'mongoid', '~> 3.0.0'
 gem 'devise'
 gem 'omniauth-google-oauth2'
+gem 'google-api-client', require: 'google/api_client'
 
 # Gems used only for assets and not required
 # in production environments by default.

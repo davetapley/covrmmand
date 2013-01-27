@@ -5,6 +5,7 @@ class DashboardsController < ApplicationController
   before_filter :authenticate_user!
 
   def show
+    current_user.update_location!
   end
 
   def update

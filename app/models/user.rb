@@ -6,6 +6,9 @@ class User
   field :active, type: Boolean
   field :level, type: Integer
 
+  embeds_one :credential
+  embeds_one :location
+
   attr_accessible :email, :name, :active, :level
 
   validates_presence_of :email
@@ -14,8 +17,22 @@ class User
   devise :omniauthable
 
   def self.find_for_google_oauth2(access_token, signed_in_resource=nil)
-    data = access_token.info
-    User.find_or_create_by email: data["email"]
+    user = User.find_or_create_by email: access_token.info.email
+    credentials = access_token.credentials
+    user.create_credential token: credentials.token, expires_at: Time.at(credentials.expires_at), expires: credentials.expires
+    user
   end
+
+  def update_location!
+    client = Google::APIClient.new
+    client.authorization.access_token = credential.token
+
+    latitude = client.discovered_api('latitude')
+    result = client.execute api_method: latitude.current_location.get, parameters: { 'granularity' => 'best' }
+
+    data = MultiJson.load(result.body)['data']
+    create_location timestamp: Time.at(data['timestampMs'].to_i), latitude: data['latitude'], longitude: data['longitude'], accuracy: data['accuracy']
+  end
+
 end
 
