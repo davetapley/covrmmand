@@ -26,12 +26,17 @@ class User
     user = User.find_or_create_by email: access_token.info.email
     credentials = access_token.credentials
     user.create_credential token: credentials.token, expires_at: Time.at(credentials.expires_at), expires: credentials.expires
+    user.credential.update_attribute :refresh_token, credentials.refresh_token unless credentials.refresh_token.nil?
     user
   end
 
   def update_location!
     client = Google::APIClient.new
+    client.authorization.client_id = ENV['GOOGLE_ID']
+    client.authorization.client_secret = ENV['GOOGLE_SECRET']
     client.authorization.access_token = credential.token
+    client.authorization.refresh_token = credential.refresh_token
+    binding.pry
 
     latitude = client.discovered_api('latitude')
     result = client.execute api_method: latitude.current_location.get, parameters: { 'granularity' => 'best' }
