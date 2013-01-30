@@ -1,5 +1,21 @@
 <html>
   <h1>CoVRMmand</h1>
-  We authenticate through Google, so you'll need to <a href="users/auth/google_oauth2">authenticate here</a>.
+
+  We use Google and require permissions to get your location from Latitude, you'll need to <a href="users/auth/google_oauth2">authenticate here</a>.
+
+  <hr/>
+
+  <h4>Here's what'll happen:</h4>
+  <p>Once you authorize a user is created for you on our database. This is is your email, a couple of tokens from Google, and your location, but only:</p>
+  <ul>
+    <li>Once you check 'active' (and 'Update User').<br/>Then I will start asking Google for your location every ten minutes, updating the database, and displaying it to everyone on the map.</li>
+    <li>Once you un-check active (and 'Update User') I will stop getting your location and it won't display any more, however your last known location will remain in the database (I'm going to make it clear that out, I just need to write that bit).</li>
+  </ul>
+
+  <hr/>
+
+  <h4>For the curious</h4>
+  <p>It's written with Ruby on Rails, and you can find all the code <a href="">here</a>, feel free to fork and hack away.</p>
+  <p>The site itself is running on a single Heroku dyno, so don't expect it to be too snappy.</p>
 </html>
 
