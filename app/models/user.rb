@@ -36,7 +36,6 @@ class User
     client.authorization.client_secret = ENV['GOOGLE_SECRET']
     client.authorization.access_token = credential.token
     client.authorization.refresh_token = credential.refresh_token
-    binding.pry
 
     latitude = client.discovered_api('latitude')
     result = client.execute api_method: latitude.current_location.get, parameters: { 'granularity' => 'best' }
