@@ -14,7 +14,7 @@ class User
   validates_presence_of :email
   validates :level, inclusion: { in: 1..8, allow_nil: true }
 
-  before_save :update_location!, if: :active?
+  before_save lambda { active? ? update_location! : location.destroy }
 
   devise :omniauthable
 
@@ -40,13 +40,16 @@ class User
     latitude = client.discovered_api('latitude')
     result = client.execute api_method: latitude.current_location.get, parameters: { 'granularity' => 'best' }
 
-    unless result.success?
+    data = MultiJson.load(result.body)['data']
+    timestamp = Time.at(data['timestampMs'].to_i / 1000)
+
+    unless result.success? && timestamp > 1.hour.ago
       puts "Update for #{ email } failed"
+      location.try :destroy
       return
     end
 
-    data = MultiJson.load(result.body)['data']
-    create_location timestamp: Time.at(data['timestampMs'].to_i / 1000), latitude: data['latitude'], longitude: data['longitude'], accuracy: data['accuracy']
+    create_location timestamp: timestamp, latitude: data['latitude'], longitude: data['longitude'], accuracy: data['accuracy']
   end
 
 end
