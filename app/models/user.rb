@@ -40,11 +40,17 @@ class User
     latitude = client.discovered_api('latitude')
     result = client.execute api_method: latitude.current_location.get, parameters: { 'granularity' => 'best' }
 
+    unless result.success? && timestamp > 1.hour.ago
+      puts "Update for #{ email } failed"
+      location.try :destroy
+      return
+    end
+
     data = MultiJson.load(result.body)['data']
     timestamp = Time.at(data['timestampMs'].to_i / 1000)
 
-    unless result.success? && timestamp > 1.hour.ago
-      puts "Update for #{ email } failed"
+    unless timestamp > 1.hour.ago
+      puts "Location for #{ email } stale"
       location.try :destroy
       return
     end
